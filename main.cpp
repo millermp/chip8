@@ -82,6 +82,7 @@ int main(int, char**)
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     chip8 myChip8;
     myChip8.initialize();
+    myChip8.loadFile("IBM Logo.ch8");
 
     // Main loop
     bool done = false;
@@ -130,13 +131,24 @@ int main(int, char**)
 
             ImGui::Text("Program Counter: 0x%X", myChip8.getPc());
 
-            for (int i = 0; i < 16; i++) {
-                ImGui::Text("V%d: 0x%X", i, myChip8.getRegister(0));
+            for (int i=512; i < 520; i++) {
+                ImGui::Text("0x%02X ", myChip8.getMemory(i));
+                ImGui::SameLine();
             }
+            ImGui::NewLine();
+
+            for (int i = 0; i < 16; i++) {
+                ImGui::Text("V%02d: 0x%02X", i, myChip8.getRegister(0));
+            }
+
+            
 
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
             ImGui::End();
         }
+
+        // 2.A Show the memory viewer, docked to the bottom
+        
 
         // 3. Show another simple window.
         if (show_another_window)

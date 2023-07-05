@@ -60,6 +60,9 @@ void chip8::initialize()
     }
 
     // load fonts
+    for (int i = 0; i < 80; ++i) {
+        memory[i+80] = chip8_fontset[i];
+    }
 
     // reset timers
     delay_timer = 0;
@@ -91,4 +94,26 @@ void chip8::emulateCycle()
     }
 }
 
+void chip8::loadFile(const char *filename)
+{
+    uint8_t buffer[4096-512];
+    FILE *rom = fopen(filename, "rb");
+    if (rom != NULL) {
+        size_t newLen = fread(buffer, sizeof(uint8_t), 4096-512, rom);
+        if (ferror(rom) != 0) {
+            fputs("error reading file", stderr);
+        } else {
+            buffer[newLen++] = '\0';
+        }
+    }
+    fclose(rom);
 
+    for (int i=0; i<(int)sizeof(buffer); ++i) {
+        memory[i+512] = buffer[i];
+    }
+}
+
+uint8_t chip8::getMemory(const int address) const
+{
+    return memory[address];
+}

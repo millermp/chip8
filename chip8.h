@@ -19,9 +19,11 @@ public:
     chip8();
     ~chip8();
     void initialize();
+    void loadFile(const char* filename);
     void emulateCycle();
 
     uint8_t getRegister(const int regname) const;
     uint16_t getPc() const;
+    uint8_t getMemory(const int address) const;
 };
 
