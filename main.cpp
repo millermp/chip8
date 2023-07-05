@@ -137,7 +137,9 @@ int main(int, char**)
                 ImGui::Text("V%X: 0x%02X", i, myChip8.getRegister(i));
             }
 
-            
+            for (int i = 0; i < 16; i++) {
+                ImGui::Text("stack[%X]: 0x%02X", i, myChip8.getStackEntry(i));
+            }
 
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
             ImGui::End();

@@ -27,5 +27,6 @@ public:
     uint8_t getMemory(const int address) const;
     uint16_t getI() const;
     uint16_t getSp() const;
+    uint16_t getStackEntry(const int index) const;
 };
 

@@ -48,7 +48,17 @@ void chip8::initialize()
     sp = 0;
 
     // clear display
+    for (int i = 0; i < 64; i++) {
+        for (int j = 0; j < 32; j++) {
+            gfx[i * j] = 0;
+        }
+    }
+
     // clear stack
+    for (int i = 0; i < 16; i++) {
+        stack[i] = 0;
+    }
+
     // clear registers V0-VF
     for (int i = 0; i < 16; i++) {
         V[i] = 0;
@@ -194,4 +204,9 @@ uint16_t chip8::getI() const
 uint16_t chip8::getSp() const
 {
     return sp;
+}
+
+uint16_t chip8::getStackEntry(const int index) const
+{
+    return stack[index];
 }
