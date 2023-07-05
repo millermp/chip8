@@ -147,8 +147,46 @@ int main(int, char**)
             ImGui::End();
         }
 
-        // 2.A Show the memory viewer, docked to the bottom
-        
+        // 2.A Show the memory viewer
+        {
+            const float TEXT_BASE_WIDTH = ImGui::CalcTextSize("A").x;
+            const float TEXT_BASE_HEIGHT = ImGui::GetTextLineHeightWithSpacing();
+
+            ImGui::Begin("Memory Contents");
+            ImVec2 outer_size = ImVec2(0.0f, TEXT_BASE_HEIGHT * 8);
+            if (ImGui::BeginTable("memory_contents", 17, ImGuiTableFlags_ScrollY, outer_size)) {
+                ImGui::TableSetupScrollFreeze(0, 1);
+                ImGui::TableSetupColumn("    ", ImGuiTableColumnFlags_None);
+                ImGui::TableSetupColumn("00", ImGuiTableColumnFlags_None);
+                ImGui::TableSetupColumn("01", ImGuiTableColumnFlags_None);
+                ImGui::TableSetupColumn("02", ImGuiTableColumnFlags_None);
+                ImGui::TableSetupColumn("03", ImGuiTableColumnFlags_None);
+                ImGui::TableSetupColumn("04", ImGuiTableColumnFlags_None);
+                ImGui::TableSetupColumn("05", ImGuiTableColumnFlags_None);
+                ImGui::TableSetupColumn("06", ImGuiTableColumnFlags_None);
+                ImGui::TableSetupColumn("07", ImGuiTableColumnFlags_None);
+                ImGui::TableSetupColumn("08", ImGuiTableColumnFlags_None);
+                ImGui::TableSetupColumn("09", ImGuiTableColumnFlags_None);
+                ImGui::TableSetupColumn("0A", ImGuiTableColumnFlags_None);
+                ImGui::TableSetupColumn("0B", ImGuiTableColumnFlags_None);
+                ImGui::TableSetupColumn("0C", ImGuiTableColumnFlags_None);
+                ImGui::TableSetupColumn("0D", ImGuiTableColumnFlags_None);
+                ImGui::TableSetupColumn("0E", ImGuiTableColumnFlags_None);
+                ImGui::TableSetupColumn("0F", ImGuiTableColumnFlags_None);
+                ImGui::TableHeadersRow();
+
+                for (int row = 0; row < 256; row++) {
+                    ImGui::TableNextRow();
+                    ImGui::TableNextColumn(); ImGui::Text("%03X0", row);
+                    for (int col = 0; col < 16; col++) {
+                        ImGui::TableNextColumn(); ImGui::Text("%02X", myChip8.getMemory((row*16) + col));
+                    }
+                }
+
+                ImGui::EndTable();
+            }
+            ImGui::End();
+        }
 
         // 3. Show another simple window.
         if (show_another_window)

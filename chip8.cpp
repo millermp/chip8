@@ -77,11 +77,79 @@ void chip8::emulateCycle()
     // Decode Opcode
     switch(opcode & 0xF000) {
         case 0x0000:
+            switch(opcode & 0x000F) {
+                case 0x0000: // 0x00E0: Clears the screen
+                {
+                    printf("Clear Screen\n");
+                    pc += 2;
+                }
+                    break;
+                case 0x000E: // 0x00EE: Returns from subroutine
+                    // execute
+                    // pop value from stack and set PC to value
+                    {
+                    printf("Unimplemented 0x00EE\n");
+                    }
+                    break;
+                
+                default:
+                {
+                    printf("Unknown opcode [0x0000]: 0x%X\n", opcode);
+                    pc += 2;
+                }
+            }
             break;
+        case 0x1000: // 1NNN: Jump
+        {
+            if ((opcode & 0xFFF) == pc) break;
+            printf("JUMP 0x%03X\n", (opcode & 0xFFF));
+            pc = opcode & 0xFFF;
+        }
+            break;
+        case 0x2000: // 2NNN: Subroutine
+            // push current PC value to stack and set PC to NNN
+            {
+            printf("Unimplemented 0x2NNN\n");
+            pc += 2;
+            }
+            break;
+        case 0x6000: // 6XNN: Set register VX to NN
+        {
+            printf("LD V%d, %X\n", (opcode >> 8) & 0x0F, opcode & 0x00FF);
+            int reg = (opcode >> 8) & 0x0F;
+            V[reg] = opcode & 0x00FF;
+            pc += 2;
+        }
+            break;
+        case 0x7000: // 7XNN: Add NN to register VX
+        {
+            printf("ADD V%d, %X\n", (opcode >> 8) & 0x0F, opcode & 0x00FF);
+            int reg = (opcode >> 8) & 0x0F;
+            V[reg] += opcode & 0x00FF;
+            pc += 2;
+        }
+            break;
+        case 0xA000: // ANNN: Sets I to the address NNN
+        {
+            printf("LD I, 0x%03X\n", opcode & 0x0FFF);
+            I = opcode & 0x0FFF;
+            pc += 2;
+        }
+            break;
+        case 0xD000: // DXYN: Draw stuff
+        {
+            // TODO: Add drawing
+            printf("DRW V%d, V%d, %X\n", (opcode >> 8) & 0x0F, (opcode >> 4) & 0xF, opcode & 0xF);
+            pc += 2;
+        }
+            break;
+
         default:
+        {
             printf("Unknown opcode: 0x%X\n", opcode);
+            pc += 2;
+        }
     }
-    // Execute Opcode
 
     // Update timers
     if (delay_timer > 0)
