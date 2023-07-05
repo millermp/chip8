@@ -185,3 +185,13 @@ uint8_t chip8::getMemory(const int address) const
 {
     return memory[address];
 }
+
+uint16_t chip8::getI() const
+{
+    return I;
+}
+
+uint16_t chip8::getSp() const
+{
+    return sp;
+}

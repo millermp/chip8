@@ -129,16 +129,12 @@ int main(int, char**)
 
             ImGui::Begin("CHIP-8 Status");                          // Create a window called "Hello, world!" and append into it.
 
-            ImGui::Text("Program Counter: 0x%X", myChip8.getPc());
-
-            for (int i=512; i < 520; i++) {
-                ImGui::Text("0x%02X ", myChip8.getMemory(i));
-                ImGui::SameLine();
-            }
-            ImGui::NewLine();
+            ImGui::Text("Program Counter: 0x%04X", myChip8.getPc());
+            ImGui::Text("Stack Pointer: 0x%02X", myChip8.getSp());
+            ImGui::Text("I: 0x%04X", myChip8.getI());
 
             for (int i = 0; i < 16; i++) {
-                ImGui::Text("V%02d: 0x%02X", i, myChip8.getRegister(0));
+                ImGui::Text("V%X: 0x%02X", i, myChip8.getRegister(i));
             }
 
             

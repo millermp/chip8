@@ -22,13 +22,13 @@ Translation of IBM Logo.ch8:
  9. A248 LD I, 248      # Set I to 248
 10. 7008 ADD V0, 08     # Add 8 to V0 = 1D
 11. D01F DRW V0, V1, F  # Draw 16 bytes from memory, starting at 248 at coord 1D, 8
-12. 7004 ADD V0, 04
-13. A257 LD I, 257
+12. 7004 ADD V0, 04     # Add 4 to V0 = 21
+13. A257 LD I, 257      # Set I to 257
 14. D01F DRW V0, V1, F
-15. 7008 ADD V0, 08
-16. A266 LD I, 266
+15. 7008 ADD V0, 08     # Add 8 to V0 = 29
+16. A266 LD I, 266      # Set I to 266
 17. D01F DRW V0, V1, F
-18. 7008 ADD V0, 08
-19. A275 LD I, 275
+18. 7008 ADD V0, 08     # Add 8 to V0 = 31
+19. A275 LD I, 275      # Set I to 275
 20. D01F DRW V0, V1, F
 21. 1228 JMP 228        # End Program

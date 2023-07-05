@@ -25,5 +25,7 @@ public:
     uint8_t getRegister(const int regname) const;
     uint16_t getPc() const;
     uint8_t getMemory(const int address) const;
+    uint16_t getI() const;
+    uint16_t getSp() const;
 };
 
