@@ -14,6 +14,7 @@ private:
     uint16_t stack[16];
     uint16_t sp;
     uint8_t key[16];
+    bool drawFlag;
 
 public:
     chip8();
@@ -21,6 +22,7 @@ public:
     void initialize();
     void loadFile(const char* filename);
     void emulateCycle();
+    void debugDisplay();
 
     uint8_t getRegister(const int regname) const;
     uint16_t getPc() const;
@@ -28,5 +30,8 @@ public:
     uint16_t getI() const;
     uint16_t getSp() const;
     uint16_t getStackEntry(const int index) const;
+    bool needsDraw() const;
+    uint8_t* getGraphicsMatrix();
+
 };
 

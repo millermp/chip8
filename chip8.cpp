@@ -48,10 +48,8 @@ void chip8::initialize()
     sp = 0;
 
     // clear display
-    for (int i = 0; i < 64; i++) {
-        for (int j = 0; j < 32; j++) {
-            gfx[i * j] = 0;
-        }
+    for (int i = 0; i < 2048; i++) {
+        gfx[i] = 0;
     }
 
     // clear stack
@@ -148,8 +146,25 @@ void chip8::emulateCycle()
             break;
         case 0xD000: // DXYN: Draw stuff
         {
-            // TODO: Add drawing
             printf("DRW V%d, V%d, %X\n", (opcode >> 8) & 0x0F, (opcode >> 4) & 0xF, opcode & 0xF);
+            uint8_t x = V[(opcode & 0x0F00) >> 8];
+            uint8_t y = V[(opcode & 0x00F0) >> 4];
+            uint8_t height = opcode & 0x000F;
+            uint8_t pixel;
+
+            V[0xF] = 0;
+            for (int yline = 0; yline < height; yline++) {
+                pixel = memory[I + yline];
+                for (int xline = 0; xline < 8; xline++) {
+                    if ((pixel & (0x80 >> xline)) != 0) {
+                        if (gfx[(x + xline + ((y + yline) * 64))] == 1) 
+                            V[0xF] = 1;
+                        gfx[x + xline + ((y + yline) * 64)] ^= 1;
+                    }
+                }
+            }
+
+            drawFlag = true;
             pc += 2;
         }
             break;
@@ -196,6 +211,28 @@ uint8_t chip8::getMemory(const int address) const
     return memory[address];
 }
 
+void chip8::debugDisplay()
+{
+    printf("   0123456789012345678901234567890123456789012345678901234567890123\n");
+    for (int y = 0; y < 32; y++)
+    {
+        printf("%02d ", y);
+        for (int x = 0; x < 64; x++)
+        {
+            // printf("coords(%d, %d)\n", x, y);
+            if (gfx[(y * 64) + x] == 0)
+            {
+                    printf(" ");
+            }
+            else
+            {
+                    printf("*");
+            }
+        }
+        printf("\n");
+    }
+}
+
 uint16_t chip8::getI() const
 {
     return I;
@@ -209,4 +246,14 @@ uint16_t chip8::getSp() const
 uint16_t chip8::getStackEntry(const int index) const
 {
     return stack[index];
+}
+
+bool chip8::needsDraw() const
+{
+    return drawFlag;
+}
+
+uint8_t* chip8::getGraphicsMatrix()
+{
+    return &gfx[0];
 }

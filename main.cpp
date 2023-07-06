@@ -83,6 +83,7 @@ int main(int, char**)
     chip8 myChip8;
     myChip8.initialize();
     myChip8.loadFile("IBM Logo.ch8");
+    // myChip8.debugDisplay();
 
     // Main loop
     bool done = false;
@@ -185,6 +186,27 @@ int main(int, char**)
             }
             ImGui::End();
         }
+        
+        // 2.B Show the graphics output
+        {
+            ImGui::Begin("Graphics Display");
+            uint8_t* arr = myChip8.getGraphicsMatrix();
+            for (int y = 0; y < 32; y++) {
+                for (int x = 0; x < 64; x++) {
+                    if (arr[(y * 64) + x] == 0) {
+                        ImGui::Text(" ");
+                        ImGui::SameLine();
+                    } 
+                    else {
+                        ImGui::Text("#");
+                        ImGui::SameLine();
+                    } 
+                    
+                }
+                ImGui::NewLine();
+            }
+            ImGui::End();
+        }
 
         // 3. Show another simple window.
         if (show_another_window)
@@ -213,6 +235,8 @@ int main(int, char**)
     SDL_GL_DeleteContext(gl_context);
     SDL_DestroyWindow(window);
     SDL_Quit();
+
+    // myChip8.debugDisplay();
 
     return 0;
 }
